@@ -1,0 +1,50 @@
+---
+# Required Fields
+book:
+  id: "{{BOOK_ID}}"
+  title: "{{BOOK_TITLE}}"
+  subtitle: ""
+  version: 0.1.0
+  authors:
+    - name: "{{AUTHOR_NAME}}"
+      role: "Author"
+  language: en
+  description: >
+    A comprehensive guide to {{BOOK_TOPIC}}.
+  
+# Optional Fields
+  publisher: "Arcanean Press"
+  publication_date: "{{CURRENT_DATE}}"
+  cover_image: assets/cover.jpg
+  tags: ["{{MAIN_TAG_1}}", "{{MAIN_TAG_2}}"]
+  license: CC-BY-NC-ND-4.0
+
+# Build Configuration
+build:
+  formats: [web, pdf, epub]
+  stylesheet: styles/main.css
+  template: default
+  output_dir: ../../output
+  
+  # Format-specific settings
+  web:
+    base_url: /books/{{BOOK_ID}}/
+    
+  pdf:
+    paper_size: A5
+    
+  epub:
+    cover_image: assets/cover.jpg
+
+# Table of Contents
+toc:
+  - title: "Introduction"
+    file: "chapters/01-introduction/content.md"
+  - title: "Getting Started"
+    file: "chapters/02-getting-started/content.md"
+
+# Custom Variables
+variables:
+  main_character: "Aelar"
+  world_name: "The Shattered Isles"
+  current_year: 1247

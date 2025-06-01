@@ -34,5 +34,8 @@
     "*.{js,jsx,ts,tsx,md,json}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server-memory": "^2025.4.25"
   }
 }

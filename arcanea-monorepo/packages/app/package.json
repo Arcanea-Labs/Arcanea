@@ -1,0 +1,26 @@
+{
+  "name": "@arcanea/app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^6.1.9",
+    "expo": "~50.0.0",
+    "expo-constants": "~15.0.0",
+    "expo-linking": "~6.2.0",
+    "expo-router": "^3.5.0",
+    "expo-status-bar": "~1.11.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.73.4",
+    "react-native-web": "~0.19.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  }
+}

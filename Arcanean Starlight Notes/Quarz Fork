@@ -1,0 +1,52 @@
+ Your Vision: Arcanean Starlight Notes
+Let’s lock it in:
+A forked evolution of Quartz with these major upgrades:
+
+🌟 Arcanean Starlight Notes – Vision
+“A beautiful, immersive second-brain publishing system, powered by knowledge graphs + GenAI agents that guide, summarize, and evolve your ideas with you.”
+
+⚡ What You'll Fix From Quartz:
+Problem	Solution
+Graph is overwhelming	Add clustering, collapsible layers, intelligent grouping (e.g. by topic, chakra, project)
+No interactivity	Click a node → show summary, GPT-4o output, story hook, related characters
+No agentic layer	Add embedded Arcanean Guide Agent (via OpenRouter / Claude) that reacts to node selection
+No creator journey	Create a “starlight path” (a sequence of notes to read/follow)
+Flat design	Introduce Arcanean aesthetic (soft glows, glyph-inspired UI, floating node layout)
+
+🧬 Unique Selling Features
+Feature	Description
+🎓 Guided Graphs	View evolves based on your tags, themes, or mood
+🧠 Starlight Agents	GPT agents help you connect ideas, clean notes, and write summaries
+📖 Story Mode	Like Twine: follow note paths as if reading an unfolding narrative
+🎨 Themed Graph Skins	E.g. “Arcanea Forest,” “Data Temple,” “Luminor Archive”
+📤 1-click Publish	To GitHub Pages, Vercel, or arcanea.ai/yourname
+
+⚙️ Tech Stack Recommendation
+Part	Tool	Reason
+Site Engine	Astro or Next.js	Blazing fast, MDX support
+Graph	vis.js or D3 + Graphlib	Interactive, zoom, clustering
+GenAI Agent	OpenRouter SDK	Embed assistant into sidebar or modal
+Markdown Engine	MDX + Custom Frontmatter	Can embed components like <GraphNote />
+Hosting	Vercel + GitHub	Easy for users to clone & deploy
+Optional Auth	Supabase or Clerk	If multi-user support is added
+
+🧪 MVP Roadmap (V0.1 – "Luminor Launch")
+🧱 Fork Quartz → arcanean-starlight-notes
+
+🎨 Build Graph Overlay (nodes, clusters, themes)
+
+🤖 Add Assistant.js connected to OpenRouter
+
+📂 Example Content: FrankX Identity Graph + Arcanea Lore
+
+🔥 1-Click Deploy via Vercel
+
+🧙 Optional: Let users generate Companion AI from notes
+
+🌍 Public Impact + Reuse Potential
+Audience	Value
+Writers	A system to turn notes into immersive worlds
+Researchers	Visual idea evolution + summarizing agent
+Students	A new type of digital garden + learning agent
+Coaches/Brand Builders	Publish second brains + guided content flows
+Arcanea Community	Connect their personal notes into your mytho

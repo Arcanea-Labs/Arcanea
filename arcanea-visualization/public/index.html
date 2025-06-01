@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcanea Ontology Explorer</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+    }
+    #header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #controls {
+      padding: 10px 20px;
+      background-color: #ecf0f1;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    #search {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid #bdc3c7;
+      width: 300px;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #graph-container {
+      width: 100%;
+      height: calc(100vh - 120px);
+      background-color: white;
+    }
+    .node {
+      cursor: pointer;
+    }
+    .node circle {
+      stroke: #fff;
+      stroke-width: 1.5px;
+    }
+    .node.primordial circle {
+      fill: #e74c3c;
+    }
+    .node.archetype circle {
+      fill: #3498db;
+    }
+    .node.higher circle {
+      fill: #2ecc71;
+    }
+    .node text {
+      font: 10px sans-serif;
+      pointer-events: none;
+      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+    }
+    .link {
+      stroke: #95a5a6;
+      stroke-opacity: 0.6;
+    }
+    .link.elemental {
+      stroke: #7f8c8d;
+    }
+    .link.higher {
+      stroke: #27ae60;
+      stroke-width: 2px;
+    }
+    #tooltip {
+      position: absolute;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 4px;
+      pointer-events: none;
+      font-size: 12px;
+      max-width: 250px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h1>Arcanea Ontology Explorer</h1>
+  </div>
+  <div id="controls">
+    <input type="text" id="search" placeholder="Search nodes...">
+    <button id="zoom-fit">Fit View</button>
+    <button id="reset">Reset View</button>
+  </div>
+  <div id="graph-container"></div>
+  <div id="tooltip"></div>
+  <script src="visualization.js"></script>
+</body>
+</html>
