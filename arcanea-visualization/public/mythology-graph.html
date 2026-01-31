@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mythology Graph Explorer</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    
+    #header {
+      background: linear-gradient(90deg, #1a1a2e, #16213e);
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    #title {
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+    
+    #controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    #graph-container {
+      width: 100vw;
+      height: calc(100vh - 60px);
+      background: #f0f2f5;
+    }
+    
+    .node {
+      cursor: pointer;
+    }
+    
+    .node.primordial circle {
+      stroke: #fff;
+      stroke-width: 2px;
+    }
+    
+    .node.archetype circle {
+      stroke: #fff;
+      stroke-width: 1.5px;
+    }
+    
+    .node.higher circle {
+      stroke: #fff;
+      stroke-width: 2px;
+      stroke-dasharray: 3, 3;
+    }
+    
+    .node.deity circle {
+      filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.7));
+    }
+    
+    .node.hero circle {
+      filter: drop-shadow(0 0 3px rgba(30, 144, 255, 0.7));
+    }
+    
+    .node.creature circle {
+      filter: drop-shadow(0 0 3px rgba(50, 205, 50, 0.7));
+    }
+    
+    .node.place circle {
+      filter: drop-shadow(0 0 3px rgba(138, 43, 226, 0.7));
+    }
+    
+    .link {
+      stroke: #999;
+      stroke-opacity: 0.6;
+    }
+    
+    .link.elemental {
+      stroke: #4a90e2;
+    }
+    
+    .link.domain {
+      stroke: #e24a4a;
+      stroke-dasharray: 2, 2;
+    }
+    
+    .link.parent {
+      stroke: #4ae2a0;
+    }
+    
+    .link.sibling {
+      stroke: #e2d14a;
+    }
+    
+    .link.spouse {
+      stroke: #e24ad8;
+    }
+    
+    #tooltip {
+      position: absolute;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 4px;
+      pointer-events: none;
+      font-size: 12px;
+      max-width: 250px;
+      z-index: 1000;
+    }
+    
+    .tooltip-title {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 5px;
+      color: #ffcc00;
+    }
+    
+    .tooltip-type {
+      font-style: italic;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+    
+    .tooltip-desc {
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+    
+    #legend {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+    }
+    
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <div id="title">Mythology Graph Explorer</div>
+    <div id="controls">
+      <button id="zoom-fit">Reset View</button>
+      <button id="layout-force">Force Layout</button>
+    </div>
+  </div>
+  
+  <div id="graph-container">
+    <svg id="graph"></svg>
+    <div id="tooltip"></div>
+    
+    <div id="legend">
+      <div style="font-weight: bold; margin-bottom: 8px;">Node Types</div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #8B4513;"></div>
+        <span>Primordial Elements</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #9370DB;"></div>
+        <span>Deities</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #FF6347;"></div>
+        <span>Heroes</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #32CD32;"></div>
+        <span>Creatures</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #9370DB;"></div>
+        <span>Places</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Add button functionality
+    document.getElementById('zoom-fit').addEventListener('click', () => {
+      window.dispatchEvent(new Event('resize'));
+    });
+    
+    document.getElementById('layout-force').addEventListener('click', () => {
+      if (window.simulation) {
+        window.simulation.alpha(0.5).restart();
+      }
+    });
+  </script>
+</body>
+</html>

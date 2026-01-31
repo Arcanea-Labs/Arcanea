@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery of Wonders - Arcanea</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Experience visual interpretations of mythological concepts. Browse AI-generated art and community creations in the Arcanea Gallery.">
+    <meta name="keywords" content="mythology art, AI art, fantasy gallery, digital art, mythological imagery">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --deep-purple: #1a1a2e;
+            --gold-accent: #f7d794;
+            --soft-gold: #e8c17a;
+            --text-light: #dcdde1;
+            --text-muted: #95afc0;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--cosmic-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(247, 215, 148, 0.2);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-link {
+            color: var(--gold-accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+        
+        .gallery-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        /* Filter Controls */
+        .filter-section {
+            margin-top: 80px;
+            padding: 2rem;
+            background: rgba(26, 26, 46, 0.5);
+            border-bottom: 1px solid rgba(247, 215, 148, 0.1);
+        }
+        
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gold-accent);
+            color: var(--text-light);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--gold-accent);
+            color: var(--cosmic-dark);
+        }
+        
+        /* Gallery Grid */
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: var(--deep-purple);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            aspect-ratio: 4/5;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(247, 215, 148, 0.3);
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+        
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .image-overlay {
+            transform: translateY(0);
+        }
+        
+        .artwork-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--gold-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .artwork-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: var(--gold-accent);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .lightbox-info {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .lightbox-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .lightbox-description {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Placeholder for demo images */
+        .placeholder-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--deep-purple), var(--cosmic-dark));
+            color: var(--gold-accent);
+            font-size: 3rem;
+        }
+        
+        /* Loading animation */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+            
+            .filter-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="arcanea-portal.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Portal
+            </a>
+            <h1 class="gallery-title">Gallery of Wonders</h1>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Filter Controls -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="deities">Deities</button>
+            <button class="filter-btn" data-filter="realms">Realms</button>
+            <button class="filter-btn" data-filter="creatures">Creatures</button>
+            <button class="filter-btn" data-filter="artifacts">Artifacts</button>
+            <button class="filter-btn" data-filter="cosmic">Cosmic</button>
+        </div>
+    </section>
+    
+    <!-- Gallery Grid -->
+    <main class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery items will be dynamically generated -->
+        </div>
+        
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Summoning visions from the aether...</p>
+        </div>
+    </main>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <i class="fas fa-times lightbox-close" onclick="closeLightbox()"></i>
+            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+            <div class="lightbox-info">
+                <h2 class="lightbox-title" id="lightboxTitle"></h2>
+                <p class="lightbox-description" id="lightboxDescription"></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Gallery data (in a real app, this would come from an API)
+        const galleryData = [
+            {
+                id: 1,
+                title: "The Primordial Void",
+                description: "Before creation, there was only the infinite potential of the Void.",
+                category: "cosmic",
+                icon: "fa-infinity"
+            },
+            {
+                id: 2,
+                title: "Yggdrasil, The World Tree",
+                description: "The cosmic tree that connects all nine realms of Norse mythology.",
+                category: "realms",
+                icon: "fa-tree"
+            },
+            {
+                id: 3,
+                title: "Zeus, King of Olympus",
+                description: "The thunder god who rules from his throne atop Mount Olympus.",
+                category: "deities",
+                icon: "fa-bolt"
+            },
+            {
+                id: 4,
+                title: "The Phoenix Rising",
+                description: "Eternal symbol of rebirth and transformation through fire.",
+                category: "creatures",
+                icon: "fa-fire"
+            },
+            {
+                id: 5,
+                title: "Excalibur's Light",
+                description: "The legendary sword that chooses the rightful king.",
+                category: "artifacts",
+                icon: "fa-crown"
+            },
+            {
+                id: 6,
+                title: "Gaia's Awakening",
+                description: "The Earth Mother emerges from primordial chaos.",
+                category: "deities",
+                icon: "fa-globe"
+            },
+            {
+                id: 7,
+                title: "The Bifrost Bridge",
+                description: "Rainbow bridge connecting Midgard to Asgard.",
+                category: "realms",
+                icon: "fa-rainbow"
+            },
+            {
+                id: 8,
+                title: "Cerberus at the Gates",
+                description: "The three-headed guardian of the Underworld.",
+                category: "creatures",
+                icon: "fa-dog"
+            },
+            {
+                id: 9,
+                title: "The Akashic Records",
+                description: "Cosmic library containing all knowledge of past, present, and future.",
+                category: "cosmic",
+                icon: "fa-book"
+            },
+            {
+                id: 10,
+                title: "Mjolnir's Thunder",
+                description: "Thor's hammer, forged in the heart of a dying star.",
+                category: "artifacts",
+                icon: "fa-hammer"
+            },
+            {
+                id: 11,
+                title: "The Ouroboros",
+                description: "The eternal serpent that devours its own tail.",
+                category: "creatures",
+                icon: "fa-circle"
+            },
+            {
+                id: 12,
+                title: "Mount Olympus",
+                description: "Home of the Greek gods, touching the heavens.",
+                category: "realms",
+                icon: "fa-mountain"
+            }
+        ];
+        
+        let currentFilter = 'all';
+        
+        // Initialize gallery
+        function initGallery() {
+            renderGallery(galleryData);
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 1000);
+        }
+        
+        // Render gallery items
+        function renderGallery(items) {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+            
+            items.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.setAttribute('data-category', item.category);
+                galleryItem.onclick = () => openLightbox(item);
+                
+                galleryItem.innerHTML = `
+                    <div class="image-container">
+                        <div class="placeholder-image">
+                            <i class="fas ${item.icon}"></i>
+                        </div>
+                        <div class="image-overlay">
+                            <h3 class="artwork-title">${item.title}</h3>
+                            <p class="artwork-description">${item.description}</p>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(galleryItem);
+            });
+        }
+        
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter gallery
+                currentFilter = this.getAttribute('data-filter');
+                const filtered = currentFilter === 'all' 
+                    ? galleryData 
+                    : galleryData.filter(item => item.category === currentFilter);
+                
+                renderGallery(filtered);
+            });
+        });
+        
+        // Lightbox functionality
+        function openLightbox(item) {
+            const lightbox = document.getElementById('lightbox');
+            document.getElementById('lightboxTitle').textContent = item.title;
+            document.getElementById('lightboxDescription').textContent = item.description;
+            // In a real app, this would load the actual image
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close lightbox on background click
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+        
+        // Close lightbox on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+        
+        // Initialize on load
+        window.addEventListener('load', initGallery);
+    </script>
+</body>
+</html>

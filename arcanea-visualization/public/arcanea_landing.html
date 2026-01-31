@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcanea - Where Myths Come Alive Through AI</title>
+    
+    <!-- Enhanced SEO Meta Tags -->
+    <meta name="description" content="Enter Arcanea, an immersive mythology platform where AI meets ancient wisdom. Create stories, explore interactive visualizations, and journey through cosmic soundscapes.">
+    <meta name="keywords" content="AI storytelling, mythology platform, interactive visualization, creative writing, worldbuilding, mythological exploration">
+    <meta name="author" content="Arcanea Labs">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Arcanea - Where Myths Come Alive Through AI">
+    <meta property="og:description" content="An immersive mythology platform combining AI-powered storytelling with interactive visualizations">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arcanea.io">
+    <meta property="og:image" content="https://arcanea.io/images/og-image.jpg">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Arcanea - Where Myths Come Alive">
+    <meta name="twitter:description" content="Create, explore, and experience mythology like never before">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Arcanea",
+      "description": "AI-powered mythology creation and exploration platform",
+      "applicationCategory": "CreativeWork",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --deep-indigo: #1a1a2e;
+            --mystic-blue: #16213e;
+            --pale-gold: #f7d794;
+            --warm-gold: #e8c17a;
+            --text-light: #dcdde1;
+            --text-muted: #95afc0;
+            --accent-glow: rgba(247, 215, 148, 0.3);
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--cosmic-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Cosmic Background Animation */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at center, var(--mystic-blue) 0%, var(--cosmic-dark) 100%);
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* Floating Navigation */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-header.scrolled {
+            padding: 1rem 3rem;
+            background: rgba(26, 26, 46, 0.95);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--pale-gold);
+            text-decoration: none;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--pale-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .enter-portal-btn {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--pale-gold);
+            color: var(--pale-gold);
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .enter-portal-btn:hover {
+            background: var(--pale-gold);
+            color: var(--cosmic-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            color: var(--pale-gold);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-primary {
+            padding: 1rem 3rem;
+            background: var(--pale-gold);
+            color: var(--cosmic-dark);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--accent-glow);
+        }
+        
+        .cta-secondary {
+            padding: 1rem 3rem;
+            background: transparent;
+            border: 2px solid var(--text-muted);
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-secondary:hover {
+            border-color: var(--pale-gold);
+            color: var(--pale-gold);
+        }
+        
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        .scroll-indicator i {
+            font-size: 2rem;
+            color: var(--pale-gold);
+            opacity: 0.6;
+        }
+        
+        /* Journey Section */
+        .journey-section {
+            padding: 5rem 2rem;
+            background: rgba(26, 26, 46, 0.3);
+        }
+        
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--pale-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .journey-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .journey-card {
+            background: rgba(22, 33, 62, 0.5);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .journey-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .journey-card:hover::before {
+            opacity: 0.1;
+        }
+        
+        .journey-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--pale-gold);
+            box-shadow: 0 15px 40px rgba(247, 215, 148, 0.2);
+        }
+        
+        .journey-icon {
+            font-size: 3rem;
+            color: var(--pale-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .journey-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .journey-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .journey-link {
+            color: var(--pale-gold);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .journey-link:hover {
+            gap: 1rem;
+        }
+        
+        /* Visualization Preview */
+        .viz-preview {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+        
+        .viz-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(22, 33, 62, 0.3);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #visualization {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            background: rgba(10, 10, 15, 0.5);
+        }
+        
+        /* Testimonial Section */
+        .testimonial-section {
+            padding: 5rem 2rem;
+            background: rgba(26, 26, 46, 0.3);
+            text-align: center;
+        }
+        
+        .testimonial-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-text {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.8rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            color: var(--pale-gold);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: var(--deep-indigo);
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--pale-gold);
+        }
+        
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .journey-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Background -->
+    <div class="cosmic-bg"></div>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Navigation -->
+    <header class="nav-header" id="navHeader">
+        <div class="nav-content">
+            <a href="#" class="logo">ARCANEA</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#journey" class="nav-link">Journey</a></li>
+                    <li><a href="#visualization" class="nav-link">Explore</a></li>
+                    <li><a href="lore-library.html" class="nav-link">Lore</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                </ul>
+            </nav>
+            <a href="arcanea-portal.html" class="enter-portal-btn">Enter Portal</a>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Where Myths Come Alive</h1>
+            <p class="hero-subtitle">Through the alchemy of AI and ancient wisdom</p>
+            <p class="hero-description">
+                Step into Arcanea, a revolutionary platform where mythology meets artificial intelligence. 
+                Create epic narratives, explore interactive cosmic maps, and immerse yourself in 
+                soundscapes that echo through the ages. Your journey into the infinite begins here.
+            </p>
+            <div class="hero-cta">
+                <a href="arcanea-portal.html" class="cta-primary">
+                    Begin Your Journey <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#journey" class="cta-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+    
+    <!-- Journey Section -->
+    <section class="journey-section" id="journey">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Your Mythological Journey</h2>
+                <p class="section-subtitle">Choose your path through the realms of creation</p>
+            </div>
+            
+            <div class="journey-grid">
+                <div class="journey-card">
+                    <i class="fas fa-feather-alt journey-icon"></i>
+                    <h3 class="journey-title">Craft Your Saga</h3>
+                    <p class="journey-description">
+                        Harness the power of AI to weave narratives that transcend time. 
+                        Our Novel Crafter guides you through character creation, world-building, 
+                        and plot development with intelligent assistance at every step.
+                    </p>
+                    <a href="novel-crafter.html" class="journey-link">
+                        Start Writing <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="journey-card">
+                    <i class="fas fa-project-diagram journey-icon"></i>
+                    <h3 class="journey-title">Explore the Cosmos</h3>
+                    <p class="journey-description">
+                        Navigate through interactive visualizations of mythological connections. 
+                        Discover how deities, heroes, and legends interweave across cultures 
+                        in our dynamic cosmic map.
+                    </p>
+                    <a href="#visualization" class="journey-link">
+                        View Map <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="journey-card">
+                    <i class="fas fa-music journey-icon"></i>
+                    <h3 class="journey-title">Harmonic Immersion</h3>
+                    <p class="journey-description">
+                        Experience the music of the spheres through carefully crafted soundscapes. 
+                        Each composition channels the essence of mythological themes, 
+                        perfect for meditation, creation, or exploration.
+                    </p>
+                    <a href="harmonic-spaces.html" class="journey-link">
+                        Listen Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Visualization Preview -->
+    <section class="viz-preview" id="visualization">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">The Cosmic Web</h2>
+                <p class="section-subtitle">See how all myths are connected</p>
+            </div>
+            
+            <div class="viz-container">
+                <div id="visualization"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonial -->
+    <section class="testimonial-section">
+        <div class="testimonial-content">
+            <p class="testimonial-text">
+                "In the beginning was the Word, and the Word was with Code, 
+                and the Word was Code. Through Arcanea, we return to that 
+                primordial act of creation, where stories shape reality."
+            </p>
+            <p class="testimonial-author">— The Arcanean Codex</p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="arcanea-portal.html" class="footer-link">Portal</a>
+                <a href="lore-library.html" class="footer-link">Lore</a>
+                <a href="novel-crafter.html" class="footer-link">Create</a>
+                <a href="gallery.html" class="footer-link">Gallery</a>
+                <a href="harmonic-spaces.html" class="footer-link">Music</a>
+            </div>
+            <p class="footer-copy"> 2024 Arcanea Labs. Weaving myths into reality.</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="visualization.js"></script>
+    <script>
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+        
+        // Scroll effects
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navHeader');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

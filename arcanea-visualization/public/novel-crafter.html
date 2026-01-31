@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novel Crafter - Arcanea</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Craft compelling narratives with AI assistance. Build worlds, develop characters, and weave stories with the Arcanea Novel Crafter.">
+    <meta name="keywords" content="AI writing, story creation, novel writing, creative writing tools, worldbuilding">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --deep-purple: #1a1a2e;
+            --mystic-blue: #16213e;
+            --gold-accent: #f7d794;
+            --soft-gold: #e8c17a;
+            --text-light: #dcdde1;
+            --text-muted: #95afc0;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--cosmic-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(247, 215, 148, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-link {
+            color: var(--gold-accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+        
+        .crafter-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .save-indicator {
+            color: var(--success);
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .save-indicator.show {
+            opacity: 1;
+        }
+        
+        /* Main Layout */
+        .crafter-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 250px 1fr 350px;
+            height: calc(100vh - 70px);
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: rgba(22, 33, 62, 0.3);
+            border-right: 1px solid rgba(247, 215, 148, 0.1);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .sidebar h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-accent);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .story-elements {
+            margin-bottom: 2rem;
+        }
+        
+        .element-item {
+            background: rgba(247, 215, 148, 0.05);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .element-item:hover {
+            border-color: var(--gold-accent);
+            background: rgba(247, 215, 148, 0.1);
+        }
+        
+        .element-item.active {
+            border-color: var(--gold-accent);
+            background: rgba(247, 215, 148, 0.15);
+        }
+        
+        .element-icon {
+            margin-right: 0.5rem;
+            color: var(--soft-gold);
+        }
+        
+        .add-element-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 1px dashed var(--gold-accent);
+            color: var(--gold-accent);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .add-element-btn:hover {
+            background: rgba(247, 215, 148, 0.1);
+        }
+        
+        /* Editor Area */
+        .editor-area {
+            display: flex;
+            flex-direction: column;
+            background: rgba(26, 26, 46, 0.2);
+            overflow: hidden;
+        }
+        
+        .editor-toolbar {
+            background: rgba(22, 33, 62, 0.5);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(247, 215, 148, 0.1);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .toolbar-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-light);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .toolbar-btn:hover {
+            border-color: var(--gold-accent);
+            color: var(--gold-accent);
+        }
+        
+        .toolbar-btn.active {
+            background: var(--gold-accent);
+            color: var(--cosmic-dark);
+            border-color: var(--gold-accent);
+        }
+        
+        .word-count {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .editor-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .story-editor {
+            width: 100%;
+            min-height: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-family: 'Crimson Text', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            resize: none;
+            outline: none;
+        }
+        
+        .story-editor::placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        /* AI Assistant Panel */
+        .ai-panel {
+            background: rgba(22, 33, 62, 0.3);
+            border-left: 1px solid rgba(247, 215, 148, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .ai-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(247, 215, 148, 0.1);
+        }
+        
+        .ai-header h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-accent);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .ai-chat {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .ai-message {
+            padding: 1rem;
+            border-radius: 10px;
+            max-width: 90%;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-message.assistant {
+            background: rgba(247, 215, 148, 0.1);
+            align-self: flex-start;
+        }
+        
+        .ai-message.user {
+            background: rgba(22, 33, 62, 0.5);
+            align-self: flex-end;
+        }
+        
+        .ai-input-area {
+            padding: 1rem;
+            border-top: 1px solid rgba(247, 215, 148, 0.1);
+        }
+        
+        .ai-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 0.8rem;
+            background: rgba(26, 26, 46, 0.5);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            border-radius: 25px;
+            color: var(--text-light);
+            font-family: 'Raleway', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-input:focus {
+            border-color: var(--gold-accent);
+        }
+        
+        .ai-send-btn {
+            padding: 0.8rem 1.2rem;
+            background: var(--gold-accent);
+            color: var(--cosmic-dark);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-send-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            padding: 1rem;
+            border-top: 1px solid rgba(247, 215, 148, 0.1);
+        }
+        
+        .quick-action-btn {
+            width: 100%;
+            padding: 0.6rem;
+            margin-bottom: 0.5rem;
+            background: rgba(247, 215, 148, 0.05);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            color: var(--text-light);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        
+        .quick-action-btn:hover {
+            background: rgba(247, 215, 148, 0.1);
+            border-color: var(--gold-accent);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--deep-purple);
+            border: 1px solid var(--gold-accent);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-header {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            background: rgba(26, 26, 46, 0.5);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            border-radius: 5px;
+            color: var(--text-light);
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .modal-btn.primary {
+            background: var(--gold-accent);
+            color: var(--cosmic-dark);
+        }
+        
+        .modal-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-light);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .crafter-container {
+                grid-template-columns: 200px 1fr 300px;
+            }
+        }
+        
+        @media (max-width: 968px) {
+            .crafter-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar,
+            .ai-panel {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="arcanea-portal.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Portal
+        </a>
+        <h1 class="crafter-title">Novel Crafter</h1>
+        <span class="save-indicator" id="saveIndicator">
+            <i class="fas fa-check-circle"></i> Saved
+        </span>
+    </nav>
+    
+    <!-- Main Container -->
+    <div class="crafter-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="story-elements">
+                <h3>Story Elements</h3>
+                <div class="element-item active">
+                    <i class="fas fa-book element-icon"></i>
+                    <span>Chapter 1: The Beginning</span>
+                </div>
+                <div class="element-item">
+                    <i class="fas fa-user element-icon"></i>
+                    <span>Protagonist</span>
+                </div>
+                <div class="element-item">
+                    <i class="fas fa-globe element-icon"></i>
+                    <span>World Setting</span>
+                </div>
+                <button class="add-element-btn" onclick="showModal('element')">
+                    <i class="fas fa-plus"></i> Add Element
+                </button>
+            </div>
+            
+            <div class="story-elements">
+                <h3>Story Arc</h3>
+                <div class="element-item">
+                    <i class="fas fa-flag element-icon"></i>
+                    <span>Act I: Setup</span>
+                </div>
+                <div class="element-item">
+                    <i class="fas fa-bolt element-icon"></i>
+                    <span>Act II: Conflict</span>
+                </div>
+                <div class="element-item">
+                    <i class="fas fa-crown element-icon"></i>
+                    <span>Act III: Resolution</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Editor Area -->
+        <main class="editor-area">
+            <div class="editor-toolbar">
+                <button class="toolbar-btn active">
+                    <i class="fas fa-align-left"></i> Write
+                </button>
+                <button class="toolbar-btn">
+                    <i class="fas fa-project-diagram"></i> Outline
+                </button>
+                <button class="toolbar-btn">
+                    <i class="fas fa-users"></i> Characters
+                </button>
+                <button class="toolbar-btn">
+                    <i class="fas fa-map"></i> World
+                </button>
+                <span class="word-count">Words: <span id="wordCount">0</span></span>
+            </div>
+            
+            <div class="editor-content">
+                <textarea class="story-editor" id="storyEditor" placeholder="Begin your story here... Let the words flow like ancient rivers carrying tales from the dawn of time."></textarea>
+            </div>
+        </main>
+        
+        <!-- AI Assistant Panel -->
+        <aside class="ai-panel">
+            <div class="ai-header">
+                <h3>AI Writing Assistant</h3>
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+                    <span>Ready to assist</span>
+                </div>
+            </div>
+            
+            <div class="ai-chat" id="aiChat">
+                <div class="ai-message assistant">
+                    <p>Welcome to the Novel Crafter! I'm here to help you weave your story. You can ask me to:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Continue your narrative</li>
+                        <li>Develop characters</li>
+                        <li>Suggest plot twists</li>
+                        <li>Create descriptions</li>
+                        <li>Build your world</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="quickAction('continue')">
+                    <i class="fas fa-pen"></i> Continue writing...
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('describe')">
+                    <i class="fas fa-image"></i> Describe this scene
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('dialogue')">
+                    <i class="fas fa-comments"></i> Generate dialogue
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('twist')">
+                    <i class="fas fa-random"></i> Suggest a plot twist
+                </button>
+            </div>
+            
+            <div class="ai-input-area">
+                <div class="ai-input-container">
+                    <input type="text" class="ai-input" id="aiInput" placeholder="Ask for help with your story...">
+                    <button class="ai-send-btn" onclick="sendAIMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 class="modal-header" id="modalHeader">Add Story Element</h2>
+            <input type="text" class="modal-input" id="modalInput" placeholder="Enter name...">
+            <textarea class="modal-input" id="modalTextarea" placeholder="Enter description..." rows="4" style="display: none;"></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="saveModal()">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize
+        const storyEditor = document.getElementById('storyEditor');
+        const wordCountElement = document.getElementById('wordCount');
+        const saveIndicator = document.getElementById('saveIndicator');
+        const aiChat = document.getElementById('aiChat');
+        const aiInput = document.getElementById('aiInput');
+        
+        // Word count
+        storyEditor.addEventListener('input', () => {
+            const words = storyEditor.value.trim().split(/\s+/).filter(word => word.length > 0).length;
+            wordCountElement.textContent = words;
+            
+            // Auto-save simulation
+            saveIndicator.classList.add('show');
+            setTimeout(() => {
+                saveIndicator.classList.remove('show');
+            }, 2000);
+        });
+        
+        // AI Chat functionality
+        function sendAIMessage() {
+            const message = aiInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addChatMessage(message, 'user');
+            aiInput.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addChatMessage(response, 'assistant');
+            }, 1000);
+        }
+        
+        function addChatMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${sender}`;
+            messageDiv.innerHTML = `<p>${message}</p>`;
+            aiChat.appendChild(messageDiv);
+            aiChat.scrollTop = aiChat.scrollHeight;
+        }
+        
+        function generateAIResponse(message) {
+            // Simulated responses
+            const responses = {
+                continue: "The mist parted like a curtain, revealing ancient stone steps that spiraled into darkness. Each step echoed with the weight of forgotten centuries, and somewhere in the depths below, a faint luminescence pulsed with an otherworldly rhythm.",
+                describe: "The chamber stretched beyond sight, its vaulted ceiling lost in shadow. Pillars of obsidian rose like frozen waterfalls, their surfaces etched with runes that seemed to shift when viewed directly. The air tasted of copper and old magic.",
+                dialogue: '"You seek the truth?" The voice emerged from everywhere and nowhere, each word dropping like stones into still water. "Truth has a price, young seeker. Are you prepared to pay it?"',
+                twist: "The mentor they had trusted, the guide who had led them this far, slowly removed their hood. The face beneath was not human—it never had been. 'Did you truly believe,' it whispered, 'that mortals were the heroes of this tale?'"
+            };
+            
+            // Check for keywords
+            const lowerMessage = message.toLowerCase();
+            for (const [key, response] of Object.entries(responses)) {
+                if (lowerMessage.includes(key)) {
+                    return response;
+                }
+            }
+            
+            // Default response
+            return "I understand you're working on your story. Could you be more specific about what kind of help you need? I can assist with character development, plot progression, world-building, or descriptive passages.";
+        }
+        
+        function quickAction(action) {
+            const prompts = {
+                continue: "Please continue the story from where I left off...",
+                describe: "Can you help me describe this scene in more detail?",
+                dialogue: "I need some dialogue for this scene.",
+                twist: "Suggest an unexpected plot twist here."
+            };
+            
+            aiInput.value = prompts[action];
+            sendAIMessage();
+        }
+        
+        // Modal functionality
+        function showModal(type) {
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('modalInput').focus();
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('modalInput').value = '';
+        }
+        
+        function saveModal() {
+            // Save logic would go here
+            closeModal();
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+S to save
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveIndicator.classList.add('show');
+                setTimeout(() => {
+                    saveIndicator.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Enter to send AI message
+            if (e.key === 'Enter' && document.activeElement === aiInput) {
+                e.preventDefault();
+                sendAIMessage();
+            }
+        });
+        
+        // Sample story starter
+        const sampleStory = `In the time before memory, when the boundaries between dream and waking were as thin as spider's silk, there lived a people who spoke in stories.
+
+They dwelt in the shadow of the Great Tree, whose roots delved deep into the earth's mysteries and whose branches touched the very stars. Each dawn, they would gather beneath its ancient boughs to weave new tales into the fabric of reality.
+
+But on this particular morning, as the first light painted the sky in shades of amber and rose, something was different. The Tree's leaves, usually silver-green and whispering with the voices of ages past, had turned the color of midnight...`;
+        
+        // Uncomment to start with sample text
+        // storyEditor.value = sampleStory;
+    </script>
+</body>
+</html>

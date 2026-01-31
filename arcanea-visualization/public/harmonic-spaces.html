@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonic Spaces - Arcanea</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Experience the music of the spheres. Immerse yourself in soundscapes inspired by mythological themes and cosmic harmonies.">
+    <meta name="keywords" content="ambient music, mythology soundscapes, meditation, cosmic harmony, sound healing">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --deep-purple: #1a1a2e;
+            --mystic-blue: #16213e;
+            --gold-accent: #f7d794;
+            --soft-gold: #e8c17a;
+            --text-light: #dcdde1;
+            --text-muted: #95afc0;
+            --pulse-color: rgba(247, 215, 148, 0.3);
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--cosmic-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Animated Background */
+        .cosmic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, var(--mystic-blue) 0%, var(--cosmic-dark) 100%);
+            overflow: hidden;
+        }
+        
+        .sound-wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: conic-gradient(from 0deg, transparent, var(--pulse-color), transparent);
+            animation: rotate 60s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(247, 215, 148, 0.2);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-link {
+            color: var(--gold-accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+        
+        .space-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        /* Main Container */
+        .harmonic-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+            min-height: 100vh;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--gold-accent);
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-style: italic;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Sound Player */
+        .player-section {
+            background: rgba(22, 33, 62, 0.3);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .visualizer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .visualizer-bar {
+            position: absolute;
+            bottom: 0;
+            width: 2%;
+            background: var(--gold-accent);
+            transition: height 0.1s ease;
+        }
+        
+        .current-track {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .track-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .track-artist {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .control-btn {
+            background: transparent;
+            border: 2px solid var(--gold-accent);
+            color: var(--gold-accent);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .control-btn:hover {
+            background: var(--gold-accent);
+            color: var(--cosmic-dark);
+            transform: scale(1.1);
+        }
+        
+        .control-btn.play-btn {
+            width: 80px;
+            height: 80px;
+            font-size: 1.5rem;
+        }
+        
+        .progress-bar {
+            position: relative;
+            height: 6px;
+            background: rgba(247, 215, 148, 0.2);
+            border-radius: 3px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            z-index: 1;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gold-accent);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Soundscape Grid */
+        .soundscape-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .soundscape-card {
+            background: rgba(22, 33, 62, 0.3);
+            border: 1px solid rgba(247, 215, 148, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .soundscape-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, var(--pulse-color) 0%, transparent 70%);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .soundscape-card:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+        
+        .soundscape-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-accent);
+            box-shadow: 0 10px 30px rgba(247, 215, 148, 0.2);
+        }
+        
+        .soundscape-icon {
+            font-size: 2.5rem;
+            color: var(--gold-accent);
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+        
+        .soundscape-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .soundscape-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .soundscape-duration {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--soft-gold);
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Meditation Timer */
+        .meditation-section {
+            background: rgba(26, 26, 46, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .meditation-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold-accent);
+            margin-bottom: 2rem;
+        }
+        
+        .timer-display {
+            font-size: 4rem;
+            color: var(--text-light);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            font-family: monospace;
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .timer-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gold-accent);
+            color: var(--gold-accent);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .timer-btn:hover {
+            background: var(--gold-accent);
+            color: var(--cosmic-dark);
+        }
+        
+        /* Breathing Circle */
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            border: 3px solid var(--gold-accent);
+            border-radius: 50%;
+            position: relative;
+            display: none;
+        }
+        
+        .breathing-circle.active {
+            display: block;
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .breath-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--gold-accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .soundscape-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-display {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="cosmic-canvas">
+        <div class="sound-wave"></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="arcanea-portal.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Portal
+            </a>
+            <h1 class="space-title">Harmonic Spaces</h1>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Main Container -->
+    <div class="harmonic-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">The Music of the Spheres</h1>
+            <p class="hero-subtitle">Where ancient wisdom meets cosmic harmony</p>
+        </section>
+        
+        <!-- Sound Player -->
+        <section class="player-section">
+            <div class="visualizer" id="visualizer">
+                <!-- Visualizer bars will be generated by JavaScript -->
+            </div>
+            
+            <div class="current-track">
+                <h2 class="track-title" id="trackTitle">Echoes of Eternity</h2>
+                <p class="track-artist">Arcanea Soundscapes</p>
+            </div>
+            
+            <div class="player-controls">
+                <button class="control-btn" onclick="previousTrack()">
+                    <i class="fas fa-backward"></i>
+                </button>
+                <button class="control-btn play-btn" id="playBtn" onclick="togglePlay()">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="control-btn" onclick="nextTrack()">
+                    <i class="fas fa-forward"></i>
+                </button>
+            </div>
+            
+            <div class="progress-bar" onclick="seekTo(event)">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="totalTime">0:00</span>
+            </div>
+        </section>
+        
+        <!-- Soundscape Grid -->
+        <section class="soundscape-grid">
+            <div class="soundscape-card" onclick="loadSoundscape('primordial')">
+                <i class="fas fa-infinity soundscape-icon"></i>
+                <h3 class="soundscape-title">Primordial Void</h3>
+                <p class="soundscape-description">Journey to the silence before creation</p>
+                <p class="soundscape-duration">Duration: 15:00</p>
+            </div>
+            
+            <div class="soundscape-card" onclick="loadSoundscape('celestial')">
+                <i class="fas fa-star soundscape-icon"></i>
+                <h3 class="soundscape-title">Celestial Chorus</h3>
+                <p class="soundscape-description">Harmonies of the cosmic dance</p>
+                <p class="soundscape-duration">Duration: 20:00</p>
+            </div>
+            
+            <div class="soundscape-card" onclick="loadSoundscape('elemental')">
+                <i class="fas fa-fire soundscape-icon"></i>
+                <h3 class="soundscape-title">Elemental Symphony</h3>
+                <p class="soundscape-description">The four elements in perfect balance</p>
+                <p class="soundscape-duration">Duration: 18:00</p>
+            </div>
+            
+            <div class="soundscape-card" onclick="loadSoundscape('mythic')">
+                <i class="fas fa-dragon soundscape-icon"></i>
+                <h3 class="soundscape-title">Mythic Resonance</h3>
+                <p class="soundscape-description">Echoes of ancient legends</p>
+                <p class="soundscape-duration">Duration: 22:00</p>
+            </div>
+            
+            <div class="soundscape-card" onclick="loadSoundscape('dreamscape')">
+                <i class="fas fa-moon soundscape-icon"></i>
+                <h3 class="soundscape-title">Dreamscape Drift</h3>
+                <p class="soundscape-description">Float through realms of imagination</p>
+                <p class="soundscape-duration">Duration: 25:00</p>
+            </div>
+            
+            <div class="soundscape-card" onclick="loadSoundscape('sacred')">
+                <i class="fas fa-om soundscape-icon"></i>
+                <h3 class="soundscape-title">Sacred Geometry</h3>
+                <p class="soundscape-description">Mathematical beauty in sound</p>
+                <p class="soundscape-duration">Duration: 30:00</p>
+            </div>
+        </section>
+        
+        <!-- Meditation Timer -->
+        <section class="meditation-section">
+            <h2 class="meditation-title">Meditation Timer</h2>
+            
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            
+            <div class="breathing-circle" id="breathingCircle">
+                <span class="breath-text" id="breathText">Breathe</span>
+            </div>
+            
+            <div class="timer-controls">
+                <button class="timer-btn" onclick="setTimer(5)">5 min</button>
+                <button class="timer-btn" onclick="setTimer(10)">10 min</button>
+                <button class="timer-btn" onclick="setTimer(15)">15 min</button>
+                <button class="timer-btn" onclick="setTimer(20)">20 min</button>
+                <button class="timer-btn" onclick="setTimer(30)">30 min</button>
+                <button class="timer-btn" onclick="toggleTimer()">Start</button>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Audio Player State
+        let isPlaying = false;
+        let currentTrackIndex = 0;
+        let currentTime = 0;
+        let duration = 300; // 5 minutes default
+        
+        const tracks = [
+            { title: "Echoes of Eternity", duration: 300 },
+            { title: "Cosmic Lullaby", duration: 420 },
+            { title: "Ancient Whispers", duration: 360 },
+            { title: "Stellar Dreams", duration: 480 }
+        ];
+        
+        // Initialize Visualizer
+        function initVisualizer() {
+            const visualizer = document.getElementById('visualizer');
+            for (let i = 0; i < 50; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                bar.style.left = `${i * 2}%`;
+                visualizer.appendChild(bar);
+            }
+        }
+        
+        // Animate Visualizer
+        function animateVisualizer() {
+            if (!isPlaying) return;
+            
+            const bars = document.querySelectorAll('.visualizer-bar');
+            bars.forEach(bar => {
+                const height = Math.random() * 100 + 20;
+                bar.style.height = `${height}px`;
+            });
+            
+            requestAnimationFrame(animateVisualizer);
+        }
+        
+        // Player Controls
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const playBtn = document.getElementById('playBtn');
+            playBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+            
+            if (isPlaying) {
+                animateVisualizer();
+                updateProgress();
+            }
+        }
+        
+        function updateProgress() {
+            if (!isPlaying) return;
+            
+            currentTime += 0.1;
+            if (currentTime > duration) {
+                currentTime = 0;
+                nextTrack();
+            }
+            
+            const progress = (currentTime / duration) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+            document.getElementById('totalTime').textContent = formatTime(duration);
+            
+            setTimeout(updateProgress, 100);
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function seekTo(event) {
+            const progressBar = event.currentTarget;
+            const clickX = event.offsetX;
+            const width = progressBar.offsetWidth;
+            const percentage = clickX / width;
+            currentTime = duration * percentage;
+        }
+        
+        function previousTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            loadTrack();
+        }
+        
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack();
+        }
+        
+        function loadTrack() {
+            const track = tracks[currentTrackIndex];
+            document.getElementById('trackTitle').textContent = track.title;
+            duration = track.duration;
+            currentTime = 0;
+        }
+        
+        function loadSoundscape(type) {
+            // Simulate loading a soundscape
+            const soundscapes = {
+                primordial: "Primordial Void",
+                celestial: "Celestial Chorus",
+                elemental: "Elemental Symphony",
+                mythic: "Mythic Resonance",
+                dreamscape: "Dreamscape Drift",
+                sacred: "Sacred Geometry"
+            };
+            
+            document.getElementById('trackTitle').textContent = soundscapes[type];
+            currentTime = 0;
+            if (!isPlaying) togglePlay();
+        }
+        
+        // Meditation Timer
+        let timerInterval;
+        let timerSeconds = 0;
+        let timerDuration = 600; // 10 minutes default
+        let isTimerRunning = false;
+        
+        function setTimer(minutes) {
+            timerDuration = minutes * 60;
+            timerSeconds = 0;
+            updateTimerDisplay();
+        }
+        
+        function toggleTimer() {
+            isTimerRunning = !isTimerRunning;
+            const breathingCircle = document.getElementById('breathingCircle');
+            
+            if (isTimerRunning) {
+                breathingCircle.classList.add('active');
+                timerInterval = setInterval(updateTimer, 1000);
+            } else {
+                breathingCircle.classList.remove('active');
+                clearInterval(timerInterval);
+            }
+        }
+        
+        function updateTimer() {
+            timerSeconds++;
+            if (timerSeconds >= timerDuration) {
+                toggleTimer();
+                // Play completion sound
+                alert('Meditation complete');
+            }
+            updateTimerDisplay();
+            
+            // Update breathing text
+            const breathText = document.getElementById('breathText');
+            const phase = timerSeconds % 8;
+            if (phase < 4) {
+                breathText.textContent = 'Inhale';
+            } else {
+                breathText.textContent = 'Exhale';
+            }
+        }
+        
+        function updateTimerDisplay() {
+            const remaining = timerDuration - timerSeconds;
+            document.getElementById('timerDisplay').textContent = formatTime(remaining);
+        }
+        
+        // Initialize
+        initVisualizer();
+        updateTimerDisplay();
+    </script>
+</body>
+</html>

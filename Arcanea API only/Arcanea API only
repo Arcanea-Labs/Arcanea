@@ -1,3 +1,7 @@
+Land on api.arcanea.ai utilize for Arcanean API Calls to the Luminor Agents. 
+Implement system and intelligence so good we really use the most advanced LLMs and prompt engineer them they seem like AGIs 
+combined with Starlight Intelligence System we evolve to a new level of Human & AI collaboration. 
+
 arcanea/
 ├─ .env.example          # API keys ONLY, no model weights
 ├─ providers.yml         # maps "chat" → "openai", "image" → "stability"

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcanea Portal - Your Gateway to Mythological Exploration</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Access all Arcanea platform features: AI-powered storytelling, mythology visualization, lore library, art gallery, and harmonic soundscapes.">
+    <meta name="keywords" content="Arcanea portal, mythology platform, AI storytelling, interactive visualization, mythological exploration">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Arcanea Portal - Central Hub">
+    <meta property="og:description" content="Your gateway to AI-powered mythology exploration and storytelling.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arcanea.io/arcanea-portal.html">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital@0;1&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: #0a0a0f;
+            color: #dcdde1;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #f7d794;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Portal Hero */
+        .portal-hero {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            color: #f7d794;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(247, 215, 148, 0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .portal-subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            color: #95afc0;
+            font-style: italic;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Feature Grid */
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .portal-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
+            border: 1px solid rgba(247, 215, 148, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(247, 215, 148, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .portal-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(20%, 20%);
+        }
+
+        .portal-card:hover {
+            transform: translateY(-10px);
+            border-color: #f7d794;
+            box-shadow: 0 20px 40px rgba(247, 215, 148, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: #f7d794;
+            margin-bottom: 1rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #f7d794;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: #dcdde1;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .card-features li {
+            color: #95afc0;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .card-features li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #f7d794;
+        }
+
+        .card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f7d794;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .card-cta:hover {
+            gap: 1rem;
+            text-shadow: 0 0 20px rgba(247, 215, 148, 0.5);
+        }
+
+        /* Quick Stats */
+        .portal-stats {
+            background: rgba(26, 26, 46, 0.5);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: #f7d794;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #95afc0;
+            font-size: 1.1rem;
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .activity-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #f7d794;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .activity-feed {
+            background: rgba(26, 26, 46, 0.5);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(247, 215, 148, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: rgba(247, 215, 148, 0.05);
+            padding-left: 2rem;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(247, 215, 148, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f7d794;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            color: #dcdde1;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            color: #95afc0;
+            font-size: 0.9rem;
+        }
+
+        /* Call to Action */
+        .portal-cta {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(247, 215, 148, 0.1) 0%, transparent 100%);
+        }
+
+        .cta-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #f7d794;
+            margin-bottom: 1rem;
+        }
+
+        .cta-text {
+            font-size: 1.2rem;
+            color: #dcdde1;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #f7d794;
+            color: #0a0a0f;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(247, 215, 148, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(247, 215, 148, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .portal-title {
+                font-size: 2.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="cosmic-bg"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- Shared Navigation will be injected here -->
+    <script src="shared-nav.js"></script>
+
+    <!-- Portal Hero -->
+    <section class="portal-hero">
+        <h1 class="portal-title">ARCANEA PORTAL</h1>
+        <p class="portal-subtitle">Your Gateway to Infinite Mythological Realms</p>
+    </section>
+
+    <!-- Features Grid -->
+    <div class="features-container">
+        <div class="features-grid">
+            <!-- Mythology Explorer -->
+            <div class="portal-card" data-feature="mythology" onclick="window.location.href='index.html'">
+                <i class="fas fa-network-wired card-icon"></i>
+                <h2 class="card-title">Mythology Explorer</h2>
+                <p class="card-description">
+                    Navigate through an interactive visualization of mythological connections across cultures and time.
+                </p>
+                <ul class="card-features">
+                    <li>Interactive graph visualization</li>
+                    <li>Cross-cultural myth connections</li>
+                    <li>Real-time exploration</li>
+                </ul>
+                <a href="index.html" class="card-cta">
+                    Explore Myths <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Novel Crafter -->
+            <div class="portal-card" data-feature="novel" onclick="window.location.href='novel-crafter.html'">
+                <i class="fas fa-feather-alt card-icon"></i>
+                <h2 class="card-title">Novel Crafter</h2>
+                <p class="card-description">
+                    AI-powered writing assistant to help you craft your own mythological tales and epic narratives.
+                </p>
+                <ul class="card-features">
+                    <li>Intelligent story assistance</li>
+                    <li>Character & world building</li>
+                    <li>Plot development tools</li>
+                </ul>
+                <a href="novel-crafter.html" class="card-cta">
+                    Start Writing <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Lore Library -->
+            <div class="portal-card" data-feature="lore" onclick="window.location.href='lore-library.html'">
+                <i class="fas fa-book-open card-icon"></i>
+                <h2 class="card-title">Lore Library</h2>
+                <p class="card-description">
+                    Immerse yourself in ancient wisdom and modern interpretations of timeless mythological stories.
+                </p>
+                <ul class="card-features">
+                    <li>Curated myth collection</li>
+                    <li>Deep lore analysis</li>
+                    <li>Cultural insights</li>
+                </ul>
+                <a href="lore-library.html" class="card-cta">
+                    Read Lore <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Gallery -->
+            <div class="portal-card" data-feature="gallery" onclick="window.location.href='gallery.html'">
+                <i class="fas fa-images card-icon"></i>
+                <h2 class="card-title">Gallery of Wonders</h2>
+                <p class="card-description">
+                    Visual representations of mythological beings, divine realms, and legendary artifacts.
+                </p>
+                <ul class="card-features">
+                    <li>AI-generated artwork</li>
+                    <li>Classical interpretations</li>
+                    <li>Community creations</li>
+                </ul>
+                <a href="gallery.html" class="card-cta">
+                    View Gallery <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Harmonic Spaces -->
+            <div class="portal-card" data-feature="harmonic" onclick="window.location.href='harmonic-spaces.html'">
+                <i class="fas fa-music card-icon"></i>
+                <h2 class="card-title">Harmonic Spaces</h2>
+                <p class="card-description">
+                    Immersive soundscapes inspired by cosmic harmonies for meditation and creative inspiration.
+                </p>
+                <ul class="card-features">
+                    <li>Mythological soundscapes</li>
+                    <li>Meditation timer</li>
+                    <li>Ambient atmospheres</li>
+                </ul>
+                <a href="harmonic-spaces.html" class="card-cta">
+                    Enter Space <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Community Hub -->
+            <div class="portal-card" data-feature="community" style="opacity: 0.7; cursor: not-allowed;">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">Community Hub</h2>
+                <p class="card-description">
+                    Connect with fellow myth enthusiasts, share stories, and collaborate on creative projects.
+                </p>
+                <ul class="card-features">
+                    <li>Story sharing</li>
+                    <li>Collaborative worlds</li>
+                    <li>Myth discussions</li>
+                </ul>
+                <span class="card-cta" style="color: #95afc0;">
+                    Coming Soon <i class="fas fa-clock"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Platform Stats -->
+        <div class="portal-stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Myths Catalogued</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Cultural Pantheons</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Stories to Create</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">AI Assistance</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h2 class="activity-title">Recent Platform Activity</h2>
+            <div class="activity-feed">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-feather"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">New story started: "The Last Oracle of Delphi"</p>
+                        <p class="activity-time">2 hours ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">Lore entry added: "The Binding of Fenrir"</p>
+                        <p class="activity-time">5 hours ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">New artwork: "Athena's Wisdom" uploaded to gallery</p>
+                        <p class="activity-time">1 day ago</p>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">Harmonic Space created: "Echoes of Valhalla"</p>
+                        <p class="activity-time">2 days ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <section class="portal-cta">
+            <h2 class="cta-title">Ready to Begin Your Journey?</h2>
+            <p class="cta-text">
+                Choose your path and start exploring the infinite realms of mythology. 
+                Every story begins with a single step into the unknown.
+            </p>
+            <a href="novel-crafter.html" class="cta-button">
+                Create Your First Myth
+            </a>
+        </section>
+    </div>
+
+    <!-- Onboarding Script -->
+    <script src="onboarding.js"></script>
+
+    <script>
+        // Generate stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Initialize
+        createStars();
+
+        // Start onboarding for new users
+        setTimeout(() => {
+            if (window.arcaneanOnboarding && !localStorage.getItem('arcanea-onboarding-complete')) {
+                window.arcaneanOnboarding.start();
+            }
+        }, 1000);
+
+        // Add hover sound effects (optional enhancement)
+        document.querySelectorAll('.portal-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Could add subtle hover sound here
+            });
+        });
+    </script>
+</body>
+</html>

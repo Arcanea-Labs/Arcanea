@@ -1,18 +1,72 @@
 {
-  "name": "arcanea-visualization",
+  "name": "arcana-visualization",
   "version": "1.0.0",
-  "description": "Interactive visualization of Arcanea ontology",
-  "main": "server.js",
+  "description": "Interactive mythology graph visualization",
   "type": "module",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=16.0.0"
   },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon --watch src --ext js,json src/server.js",
+    "build": "echo 'No build step required for Node.js server'",
+    "test": "npm run test:server",
+    "test:server": "node --no-warnings scripts/test-server.js",
+    "test:import": "node --no-warnings scripts/test-import.js",
+    "test:coverage": "c8 --reporter=lcov --reporter=text-summary npm test",
+    "import:data": "node scripts/import-data.js",
+    "lint": "eslint . --ext .js",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "prepare": "husky install"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "node": true,
+      "es2021": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+    }
+  },
+  "author": "Arcanea",
+  "license": "MIT",
   "dependencies": {
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "winston": "^3.10.0",
+    "compression": "^1.7.4",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "eslint": "^8.45.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^3.0.2",
+    "prettier": "^2.8.8"
+  },
+  "keywords": [
+    "mythology",
+    "graph",
+    "visualization",
+    "d3",
+    "interactive"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Arcanea-Labs/Arcanea/tree/main/arcanea-visualization"
+  },
+  "bugs": {
+    "url": "https://github.com/Arcanea-Labs/Arcanea/issues"
   }
 }

@@ -3,109 +3,691 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arcanea Ontology Explorer</title>
+  <title>Mythology Explorer - Arcanea Platform</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Explore the interconnected web of mythology across cultures. Interactive visualization of gods, heroes, and mythological connections.">
+  <meta name="keywords" content="mythology visualization, interactive mythology, mythological connections, Arcanea explorer">
+  
+  <!-- Scripts -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital@0;1&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #0a0a0f;
+      color: #dcdde1;
       overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      background-color: #f5f5f5;
+      height: 100vh;
     }
-    #header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 10px 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    #controls {
-      padding: 10px 20px;
-      background-color: #ecf0f1;
+    
+    /* Main Container */
+    .explorer-container {
       display: flex;
-      gap: 15px;
+      flex-direction: column;
+      height: 100vh;
+      padding-top: 80px; /* Account for fixed nav */
+    }
+    
+    /* Header */
+    .explorer-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(247, 215, 148, 0.3);
+    }
+    
+    .explorer-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: #f7d794;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+    }
+    
+    .explorer-subtitle {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.2rem;
+      color: #95afc0;
+      font-style: italic;
+    }
+    
+    /* Controls */
+    .controls {
+      background: rgba(26, 26, 46, 0.9);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
       align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(247, 215, 148, 0.2);
     }
-    #search {
-      padding: 8px 12px;
-      border-radius: 4px;
-      border: 1px solid #bdc3c7;
-      width: 300px;
+    
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
-    button {
-      padding: 8px 16px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 4px;
+    
+    .control-label {
+      color: #95afc0;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .search-box {
+      background: rgba(26, 26, 46, 0.8);
+      border: 1px solid rgba(247, 215, 148, 0.3);
+      border-radius: 25px;
+      padding: 0.5rem 1.5rem;
+      color: #dcdde1;
+      font-family: 'Raleway', sans-serif;
+      width: 250px;
+      transition: all 0.3s ease;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: #f7d794;
+      box-shadow: 0 0 20px rgba(247, 215, 148, 0.3);
+    }
+    
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(247, 215, 148, 0.3);
+      color: #dcdde1;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
+      font-family: 'Raleway', sans-serif;
     }
-    button:hover {
-      background-color: #2980b9;
+    
+    .filter-btn:hover {
+      border-color: #f7d794;
+      color: #f7d794;
+      transform: translateY(-2px);
     }
-    #graph-container {
-      width: 100%;
-      height: calc(100vh - 120px);
-      background-color: white;
+    
+    .filter-btn.active {
+      background: rgba(247, 215, 148, 0.2);
+      border-color: #f7d794;
+      color: #f7d794;
     }
+    
+    /* Visualization Container */
+    #visualization {
+      flex: 1;
+      position: relative;
+      background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 100%);
+    }
+    
+    /* D3 Styles */
     .node {
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .node circle {
-      stroke: #fff;
-      stroke-width: 1.5px;
+    
+    .node:hover {
+      filter: brightness(1.3);
     }
-    .node.primordial circle {
-      fill: #e74c3c;
-    }
-    .node.archetype circle {
-      fill: #3498db;
-    }
-    .node.higher circle {
-      fill: #2ecc71;
-    }
-    .node text {
-      font: 10px sans-serif;
+    
+    .node-label {
+      font-family: 'Crimson Text', serif;
+      font-size: 14px;
       pointer-events: none;
-      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+      user-select: none;
+      fill: #dcdde1;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     }
+    
     .link {
-      stroke: #95a5a6;
-      stroke-opacity: 0.6;
+      stroke: rgba(247, 215, 148, 0.3);
+      stroke-width: 2;
+      transition: all 0.3s ease;
     }
-    .link.elemental {
-      stroke: #7f8c8d;
+    
+    .link:hover {
+      stroke: #f7d794;
+      stroke-width: 3;
     }
-    .link.higher {
-      stroke: #27ae60;
-      stroke-width: 2px;
-    }
-    #tooltip {
+    
+    /* Info Panel */
+    .info-panel {
       position: absolute;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      border-radius: 4px;
-      pointer-events: none;
-      font-size: 12px;
-      max-width: 250px;
-      z-index: 10;
-      opacity: 0;
-      transition: opacity 0.3s;
+      top: 2rem;
+      right: 2rem;
+      background: rgba(26, 26, 46, 0.95);
+      border: 1px solid rgba(247, 215, 148, 0.3);
+      border-radius: 15px;
+      padding: 1.5rem;
+      max-width: 300px;
+      transform: translateX(350px);
+      transition: transform 0.3s ease;
+    }
+    
+    .info-panel.active {
+      transform: translateX(0);
+    }
+    
+    .info-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: #f7d794;
+      margin-bottom: 0.5rem;
+    }
+    
+    .info-type {
+      color: #95afc0;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    
+    .info-description {
+      color: #dcdde1;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .info-connections {
+      border-top: 1px solid rgba(247, 215, 148, 0.2);
+      padding-top: 1rem;
+    }
+    
+    .connection-item {
+      color: #95afc0;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    
+    .connection-item:hover {
+      color: #f7d794;
+    }
+    
+    .close-info {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      color: #95afc0;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    
+    .close-info:hover {
+      color: #f7d794;
+    }
+    
+    /* Legend */
+    .legend {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(26, 26, 46, 0.9);
+      border: 1px solid rgba(247, 215, 148, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    
+    .legend-title {
+      font-family: 'Cinzel', serif;
+      color: #f7d794;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(247, 215, 148, 0.3);
+    }
+    
+    .legend-label {
+      color: #95afc0;
+      font-size: 0.9rem;
+    }
+    
+    /* Loading */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(247, 215, 148, 0.2);
+      border-top-color: #f7d794;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      color: #95afc0;
+      font-family: 'Crimson Text', serif;
+      font-size: 1.2rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .explorer-title {
+        font-size: 2rem;
+      }
+      
+      .controls {
+        padding: 1rem;
+      }
+      
+      .search-box {
+        width: 200px;
+      }
+      
+      .info-panel {
+        max-width: 250px;
+        right: 1rem;
+        top: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="header">
-    <h1>Arcanea Ontology Explorer</h1>
+  <!-- Shared Navigation will be injected here -->
+  <script src="shared-nav.js"></script>
+  
+  <div class="explorer-container">
+    <!-- Header -->
+    <header class="explorer-header">
+      <h1 class="explorer-title">Mythology Explorer</h1>
+      <p class="explorer-subtitle">Navigate the Cosmic Web of Myths and Legends</p>
+    </header>
+    
+    <!-- Controls -->
+    <div class="controls">
+      <div class="control-group">
+        <label class="control-label">Search:</label>
+        <input type="text" class="search-box" id="searchBox" placeholder="Find a deity or hero...">
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label">Filter:</label>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="deity">Deities</button>
+        <button class="filter-btn" data-filter="hero">Heroes</button>
+        <button class="filter-btn" data-filter="creature">Creatures</button>
+      </div>
+      
+      <div class="control-group">
+        <button class="filter-btn" id="resetView">
+          <i class="fas fa-sync-alt"></i> Reset View
+        </button>
+      </div>
+    </div>
+    
+    <!-- Visualization -->
+    <div id="visualization">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Weaving the mythological tapestry...</p>
+      </div>
+    </div>
+    
+    <!-- Info Panel -->
+    <div class="info-panel" id="infoPanel">
+      <button class="close-info" onclick="closeInfoPanel()">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="info-title" id="infoTitle"></h2>
+      <p class="info-type" id="infoType"></p>
+      <p class="info-description" id="infoDescription"></p>
+      <div class="info-connections">
+        <h3 style="color: #f7d794; font-size: 1.1rem; margin-bottom: 0.5rem;">Connections</h3>
+        <div id="infoConnections"></div>
+      </div>
+    </div>
+    
+    <!-- Legend -->
+    <div class="legend">
+      <h3 class="legend-title">Legend</h3>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #e74c3c;"></div>
+        <span class="legend-label">Deity</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #3498db;"></div>
+        <span class="legend-label">Hero</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #2ecc71;"></div>
+        <span class="legend-label">Creature</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: #f39c12;"></div>
+        <span class="legend-label">Place</span>
+      </div>
+    </div>
   </div>
-  <div id="controls">
-    <input type="text" id="search" placeholder="Search nodes...">
-    <button id="zoom-fit">Fit View</button>
-    <button id="reset">Reset View</button>
-  </div>
-  <div id="graph-container"></div>
-  <div id="tooltip"></div>
+  
+  <!-- Load the visualization script -->
   <script src="visualization.js"></script>
+  
+  <script>
+    // Configuration
+    const config = {
+      width: window.innerWidth,
+      height: window.innerHeight - 160,
+      nodeRadius: 15,
+      linkDistance: 120,
+      forceStrength: 0.4,
+      colors: {
+        primary: '#8e44ad',
+        secondary: '#9b59b6',
+        accent: '#e74c3c',
+        background: '#0f0c29',
+        text: '#fff',
+        link: 'rgba(255, 255, 255, 0.3)'
+      },
+      nodeColors: {
+        deity: '#e74c3c',
+        creature: '#2ecc71',
+        realm: '#3498db',
+        element: '#f1c40f',
+        concept: '#9b59b6',
+        default: '#7f8c8d'
+      }
+    };
+
+    // State
+    let graphData = null;
+    let showLabels = true;
+    let simulation = null;
+    let transform = d3.zoomIdentity;
+
+    // DOM Elements
+    const container = d3.select('#visualization');
+    const searchInput = document.getElementById('searchBox');
+    const resetViewBtn = document.getElementById('resetView');
+    const infoPanel = document.getElementById('infoPanel');
+    const closeInfoBtn = document.getElementById('closeInfo');
+
+    // SVG Setup
+    const svg = d3.select('#visualization')
+      .append('svg')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('viewBox', [0, 0, config.width, config.height])
+      .call(d3.zoom()
+        .scaleExtent([0.1, 4])
+        .on('zoom', (event) => {
+          transform = event.transform;
+          g.attr('transform', event.transform);
+        })
+      );
+
+    const g = svg.append('g');
+    let link, node, label;
+
+    // Initialize the graph
+    async function initGraph() {
+      try {
+        // Load data from the server
+        const response = await fetch('/api/graph');
+        graphData = await response.json();
+        
+        // Initialize with all data
+        updateGraph(graphData);
+        
+        // Show initial lore panel
+        infoPanel.style.display = 'flex';
+        
+      } catch (error) {
+        console.error('Error loading graph data:', error);
+        alert('Failed to load graph data. Please try again later.');
+      }
+    }
+
+    // Update the graph with new data
+    function updateGraph(data) {
+      // Clear existing graph
+      g.selectAll('*').remove();
+      
+      // Create links
+      link = g.append('g')
+        .selectAll('line')
+        .data(data.links)
+        .enter()
+        .append('line')
+        .attr('stroke', config.colors.link)
+        .attr('stroke-width', 1);
+      
+      // Create nodes
+      node = g.append('g')
+        .selectAll('circle')
+        .data(data.nodes)
+        .enter()
+        .append('g')
+        .call(d3.drag()
+          .on('start', dragstarted)
+          .on('drag', dragged)
+          .on('end', dragended)
+        )
+        .on('mouseover', showTooltip)
+        .on('mouseout', hideTooltip)
+        .on('click', selectNode);
+      
+      // Add circles to nodes
+      node.append('circle')
+        .attr('r', d => d.importance ? d.importance * 2 + 5 : config.nodeRadius)
+        .attr('fill', d => config.nodeColors[d.type] || config.nodeColors.default)
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 1.5)
+        .attr('class', 'node-circle');
+      
+      // Add labels
+      label = node.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .attr('y', d => (d.importance ? d.importance * 2 + 20 : 20))
+        .text(d => d.id)
+        .attr('fill', '#fff')
+        .attr('font-size', '12px')
+        .attr('font-weight', 'bold')
+        .attr('pointer-events', 'none')
+        .style('opacity', showLabels ? 1 : 0);
+      
+      // Create and configure the force simulation
+      simulation = d3.forceSimulation(data.nodes)
+        .force('link', d3.forceLink(data.links).id(d => d.id).distance(config.linkDistance))
+        .force('charge', d3.forceManyBody().strength(-500))
+        .force('center', d3.forceCenter(config.width / 2, config.height / 2))
+        .force('collision', d3.forceCollide().radius(d => (d.importance ? d.importance * 2 + 10 : 20)))
+        .on('tick', ticked);
+      
+      // Handle drag events
+      function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+      
+      function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+      
+      function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+      
+      // Update positions on each tick
+      function ticked() {
+        link
+          .attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
+
+        node.attr('transform', d => `translate(${d.x},${d.y})`);
+      }
+    }
+    
+    // Tooltip functions
+    function showTooltip(event, d) {
+      const tooltip = d3.select('#tooltip');
+      tooltip
+        .style('opacity', 1)
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 10) + 'px')
+        .html(`
+          <h3>${d.id}</h3>
+          ${d.type ? `<p class="type">${d.type.charAt(0).toUpperCase() + d.type.slice(1)}</p>` : ''}
+          ${d.description ? `<p>${d.description}</p>` : ''}
+          ${d.pantheon ? `<p class="pantheon">${d.pantheon}</p>` : ''}
+        `);
+    }
+    
+    function hideTooltip() {
+      d3.select('#tooltip').style('opacity', 0);
+    }
+    
+    // Node selection
+    function selectNode(event, d) {
+      // Center the selected node
+      const [[x0, y0], [x1, y1]] = [[-d.x, -d.y], [config.width - d.x, config.height - d.y]];
+      const dx = x1 - x0;
+      const dy = y1 - y0;
+      const x = (x0 + x1) / 2;
+      const y = (y0 + y1) / 2;
+      const scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / config.width, dy / config.height)));
+      
+      // Animate to the selected node
+      svg.transition()
+        .duration(750)
+        .call(
+          d3.zoom().transform,
+          d3.zoomIdentity
+            .translate(config.width / 2, config.height / 2)
+            .scale(scale)
+            .translate(-d.x, -d.y)
+        );
+      
+      // Highlight connected nodes
+      const connectedNodeIds = new Set();
+      graphData.links.forEach(link => {
+        if (link.source.id === d.id) connectedNodeIds.add(link.target.id);
+        if (link.target.id === d.id) connectedNodeIds.add(link.source.id);
+      });
+      
+      // Update node and link styles based on selection
+      node.select('circle')
+        .attr('opacity', nodeData => 
+          nodeData.id === d.id || connectedNodeIds.has(nodeData.id) ? 1 : 0.2
+        );
+      
+      link.attr('opacity', linkData => 
+        linkData.source.id === d.id || linkData.target.id === d.id ? 1 : 0.1
+      );
+    }
+    
+    // Reset view to show entire graph
+    function resetView() {
+      svg.transition()
+        .duration(750)
+        .call(d3.zoom().transform, d3.zoomIdentity);
+      
+      // Reset node and link opacities
+      if (node) node.select('circle').attr('opacity', 1);
+      if (link) link.attr('opacity', 1);
+    }
+    
+    // Toggle node labels
+    function toggleLabels() {
+      showLabels = !showLabels;
+      if (label) label.style('opacity', showLabels ? 1 : 0);
+    }
+    
+    // Toggle lore panel
+    function toggleLore() {
+      infoPanel.style.display = infoPanel.style.display === 'flex' ? 'none' : 'flex';
+    }
+    
+    // Event Listeners
+    window.addEventListener('resize', () => {
+      config.width = window.innerWidth;
+      config.height = window.innerHeight - 160;
+      svg.attr('viewBox', [0, 0, config.width, config.height]);
+      if (simulation) {
+        simulation.force('center', d3.forceCenter(config.width / 2, config.height / 2));
+        simulation.alpha(0.3).restart();
+      }
+    });
+    
+    resetViewBtn.addEventListener('click', resetView);
+    closeInfoBtn.addEventListener('click', () => {
+      infoPanel.style.display = 'none';
+    });
+    
+    // Search functionality
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      if (!searchTerm) {
+        updateGraph(graphData);
+        return;
+      }
+      
+      const filteredNodes = graphData.nodes.filter(node => 
+        node.id.toLowerCase().includes(searchTerm) ||
+        (node.description && node.description.toLowerCase().includes(searchTerm))
+      );
+      
+      const filteredNodeIds = new Set(filteredNodes.map(n => n.id));
+      const filteredLinks = graphData.links.filter(link => 
+        filteredNodeIds.has(link.source.id) && filteredNodeIds.has(link.target.id)
+      );
+      
+      updateGraph({
+        nodes: filteredNodes,
+        links: filteredLinks
+      });
+    });
+    
+    // Initialize the graph
+    initGraph();
+  </script>
 </body>
 </html>
