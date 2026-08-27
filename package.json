@@ -37,5 +37,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server-memory": "^2025.4.25"
-  }
+  },
+  "license": "UNLICENSED",
+  "author": "Frank Riemer <frank@arcanea.ai>"
 }
