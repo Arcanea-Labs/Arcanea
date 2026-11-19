@@ -1,49 +1,45 @@
 name: Claude Code
 
+# Disable mention-triggered model execution until an admission controller with
+# per-provider budgets and authorized identities is in place.
 on:
-  issue_comment:
-    types: [created]
-  pull_request_review_comment:
-    types: [created]
-  issues:
-    types: [opened, assigned]
-  pull_request_review:
-    types: [submitted]
+  workflow_dispatch:
+    inputs:
+      mission:
+        description: 'Bounded, operator-approved Claude task'
+        required: true
+        type: string
+
+concurrency:
+  group: claude-code-manual
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   claude:
-    if: |
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    if: github.actor == 'frankxai'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
       pull-requests: read
       issues: read
       id-token: write
-      actions: read # Required for Claude to read CI results on PRs
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 1
-
-      - name: Run Claude Code
-        id: claude
+      - name: Run bounded Claude Code mission
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-
-          # This is an optional setting that allows Claude to read CI results on PRs
-          additional_permissions: |
-            actions: read
-
-          # Optional: Give a custom prompt to Claude. If this is not specified, Claude will perform the instructions specified in the comment that tagged it.
-          # prompt: 'Update the pull request description to include a summary of changes.'
-
-          # Optional: Add claude_args to customize behavior and configuration
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
-          # claude_args: '--model claude-opus-4-1-20250805 --allowed-tools Bash(gh pr:*)'
+          prompt: |
+            Execute only this operator-approved, bounded mission:
+            ${{ inputs.mission }}
+            Read-only analysis and recommendations. Do not mutate repository files,
+            deploy, create follow-up workflows or invoke external metered services.
+          claude_args: '--max-turns 5 --allowed-tools "Bash(gh issue view:*),Bash(gh pr view:*),Bash(gh pr diff:*)"'
